@@ -1,0 +1,17 @@
+Dependencies (Too heavy to upload)
+
+node_modules/
+
+Secrets (CRITICAL: Never upload this file!)
+
+.env
+
+Local Data (Your local database file)
+
+inquiries.json
+
+System Files
+
+.DS_Store
+Thumbs.db
+npm-debug.log*

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TJ Productions | Jewellery & Lifestyle</title>
+    <meta name="description" content="Expert Jewellery and Lifestyle Photography, Videography, and Animation. Based in Bangalore & Wayanad.">
+    
+    <!-- Tailwind CSS (Keep in HTML for CDN usage) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- External CSS File -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        display: ['Cinzel', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#050505',
+                            gray: '#121212',
+                            accent: '#C0C0C0',
+                            gold: '#D4AF37',
+                            light: '#f3f3f3'
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="antialiased">
+
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="flex flex-col items-center">
+            <i class="fas fa-cube text-5xl text-brand-accent mb-4 animate-pulse"></i>
+            <div class="text-brand-accent text-3xl font-display tracking-widest">TJ PRODUCTIONS</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center cursor-pointer gap-3" onclick="window.scrollTo(0,0)">
+                    <i class="fas fa-cube text-2xl text-brand-accent"></i>
+                    <span class="font-display text-xl font-bold text-white tracking-widest">TJ <span class="text-brand-accent">PRODUCTIONS</span></span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#services" class="text-gray-300 hover:text-brand-accent transition duration-300 text-sm uppercase tracking-widest">Services</a>
+                    <a href="#portfolio" class="text-gray-300 hover:text-brand-accent transition duration-300 text-sm uppercase tracking-widest">Work</a>
+                    <a href="#about" class="text-gray-300 hover:text-brand-accent transition duration-300 text-sm uppercase tracking-widest">About</a>
+                    <a href="#contact" class="px-6 py-2 border border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-brand-dark transition duration-300 text-sm uppercase tracking-widest">Book Now</a>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-white hover:text-brand-accent focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-gray border-t border-gray-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="#services" class="block px-3 py-2 text-gray-300 hover:text-brand-accent transition">Services</a>
+                <a href="#portfolio" class="block px-3 py-2 text-gray-300 hover:text-brand-accent transition">Work</a>
+                <a href="#about" class="block px-3 py-2 text-gray-300 hover:text-brand-accent transition">About</a>
+                <a href="#contact" class="block px-3 py-2 text-brand-accent font-bold">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Dark Cinematic Background" class="w-full h-full object-cover opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-brand-dark opacity-95"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="mb-6 animate-fade-in-up">
+                <span class="px-4 py-1 border border-brand-accent/30 rounded-full text-xs md:text-sm uppercase tracking-[0.2em] text-brand-accent">Bangalore • Wayanad</span>
+            </div>
+            <h1 class="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 animate-fade-in-up text-white" style="animation-delay: 0.2s;">
+                Jewellery & Lifestyle <br/><span class="text-chrome">Excellence</span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light animate-fade-in-up" style="animation-delay: 0.4s;">
+                Expert photography, cinematic videography, and 3D animation. We don't just capture moments; we create movies.
+            </p>
+            <div class="animate-fade-in-up flex flex-col md:flex-row gap-4 justify-center" style="animation-delay: 0.6s;">
+                <a href="#portfolio" class="px-8 py-3 bg-brand-accent text-brand-dark font-bold uppercase tracking-widest hover:bg-white transition duration-300">
+                    View Gallery
+                </a>
+                <a href="#contact" class="px-8 py-3 border border-gray-600 text-white font-bold uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition duration-300">
+                    Get in Touch
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-gray-500 text-xl"></i>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-brand-dark relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-3xl md:text-5xl mb-4 text-white">Our Expertise</h2>
+                <div class="w-16 h-1 bg-brand-accent mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-8 border border-white/5 bg-gradient-to-br from-white/5 to-transparent hover:border-brand-accent/50 transition duration-500 group">
+                    <div class="text-brand-accent text-4xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="far fa-gem"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display text-white">Jewellery & Lifestyle</h3>
+                    <p class="text-gray-400 font-light leading-relaxed">
+                        Specialized macro photography that highlights the brilliance of gems and the lifestyle they represent. High-end retouching included.
+                    </p>
+                </div>
+
+                <div class="p-8 border border-white/5 bg-gradient-to-br from-white/5 to-transparent hover:border-brand-accent/50 transition duration-500 group">
+                    <div class="text-brand-accent text-4xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display text-white">Videography</h3>
+                    <p class="text-gray-400 font-light leading-relaxed">
+                        From product reels to cinematic brand stories. We bring a "Movie" aesthetic to your promotional content.
+                    </p>
+                </div>
+
+                <div class="p-8 border border-white/5 bg-gradient-to-br from-white/5 to-transparent hover:border-brand-accent/50 transition duration-500 group">
+                    <div class="text-brand-accent text-4xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display text-white">Animation</h3>
+                    <p class="text-gray-400 font-light leading-relaxed">
+                        3D product modeling and motion graphics. Perfect for showcasing intricate details of jewellery and products.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 bg-brand-gray">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <h2 class="font-display text-3xl md:text-5xl mb-2 text-white">Selected Works</h2>
+                    <p class="text-brand-accent font-serif italic">Curated by Tomin James</p>
+                </div>
+                <div class="mt-4 md:mt-0 flex gap-4">
+                    <span class="text-xs uppercase tracking-widest text-white border-b border-brand-accent pb-1 cursor-pointer">All</span>
+                    <span class="text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer">Jewellery</span>
+                    <span class="text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer">Lifestyle</span>
+                    <span class="text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer">Video</span>
+                </div>
+            </div>
+
+            <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                <!-- Item 1 -->
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', 'Gold Collection', 'Jewellery Photography')">
+                    <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Jewellery" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Gold Collection</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Jewellery</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', 'Cinematic Wedding', 'Videography')">
+                    <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Video" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Cinematic Wedding</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Videography</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', 'Fashion Editorial', 'Lifestyle')">
+                    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Lifestyle" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Fashion Editorial</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Lifestyle</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('https://images.unsplash.com/photo-1617038220319-276d3cfab638?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', 'Diamond Macro', 'Jewellery')">
+                    <img src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Diamond" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Diamond Details</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Macro Photography</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', '3D Product Motion', 'Animation')">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Animation" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                        <div>
+                            <h4 class="font-display text-xl text-white">3D Product Motion</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Animation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-brand-dark relative overflow-hidden border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="order-2 lg:order-1">
+                    <p class="text-brand-accent text-sm uppercase tracking-widest mb-2">The Artist</p>
+                    <h2 class="font-display text-3xl md:text-5xl mb-6 text-white">Tomin James</h2>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        Expert in jewellery and lifestyle photography, Tomin James brings a unique "Movie" aesthetic to every project. Whether capturing the sparkle of a diamond or the emotion of a wedding, the goal is always cinematic perfection.
+                    </p>
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        Operating out of <strong>Bangalore</strong> and <strong>Wayanad</strong>, TJ Productions serves clients looking for high-end visual storytelling and animation.
+                    </p>
+                    <div class="flex items-center gap-6">
+                        <div class="text-center">
+                            <span class="block text-2xl font-bold text-white">Bangalore</span>
+                            <span class="text-xs text-gray-500 uppercase">Hub</span>
+                        </div>
+                        <div class="w-px h-10 bg-white/10"></div>
+                        <div class="text-center">
+                            <span class="block text-2xl font-bold text-white">Wayanad</span>
+                            <span class="text-xs text-gray-500 uppercase">Studio</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2 relative">
+                    <div class="absolute -inset-4 bg-brand-accent opacity-10 blur-xl rounded-full"></div>
+                    <div class="relative aspect-square bg-gray-900 rounded-lg overflow-hidden border border-white/10 flex items-center justify-center group">
+                         <i class="fas fa-camera text-6xl text-brand-accent/20 group-hover:text-brand-accent/50 transition duration-500"></i>
+                         <img src="https://images.unsplash.com/photo-1554048612-387768052bf7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay hover:opacity-100 hover:mix-blend-normal transition duration-700">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-black">
+        <div class="max-w-3xl mx-auto px-4 text-center">
+            <h2 class="font-display text-4xl md:text-6xl mb-6 text-white">Let's Film It</h2>
+            <p class="text-gray-400 mb-10 text-lg">Bangalore • Wayanad • Available Worldwide</p>
+            
+            <form class="space-y-4 text-left" id="contactForm" action="/api/contact" method="POST">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" name="fullName" placeholder="Name" required class="w-full bg-white/5 border border-white/10 p-4 text-white focus:border-brand-accent focus:outline-none transition">
+                    <input type="email" name="email" placeholder="Email" required class="w-full bg-white/5 border border-white/10 p-4 text-white focus:border-brand-accent focus:outline-none transition">
+                </div>
+                <select name="serviceType" class="w-full bg-white/5 border border-white/10 p-4 text-gray-400 focus:border-brand-accent focus:outline-none transition">
+                    <option value="" disabled selected>Select Service</option>
+                    <option value="jewellery">Jewellery Photography</option>
+                    <option value="lifestyle">Lifestyle Shoot</option>
+                    <option value="videography">Videography</option>
+                    <option value="animation">Animation</option>
+                </select>
+                <textarea name="message" rows="4" placeholder="Tell us about your project..." required class="w-full bg-white/5 border border-white/10 p-4 text-white focus:border-brand-accent focus:outline-none transition"></textarea>
+                <button type="submit" class="w-full bg-brand-accent text-brand-dark font-bold py-4 px-8 hover:bg-white hover:text-black transition duration-300 uppercase tracking-widest">
+                    Send Inquiry
+                </button>
+            </form>
+
+            <div class="mt-12 flex justify-center space-x-8 text-gray-500">
+                <a href="#" class="hover:text-brand-accent transition"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="#" class="hover:text-brand-accent transition"><i class="fab fa-whatsapp text-2xl"></i></a>
+                <a href="#" class="hover:text-brand-accent transition"><i class="fas fa-envelope text-2xl"></i></a>
+            </div>
+            <p class="mt-8 text-xs text-gray-600">Follow @tomin_james_ for latest updates</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-8 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-600 text-sm">&copy; 2025 TJ Productions. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Chat Widget -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button id="chat-toggle" class="bg-brand-accent text-brand-dark w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-white transition duration-300">
+            <i class="fas fa-comment-dots text-2xl"></i>
+        </button>
+
+        <div id="chat-window" class="hidden absolute bottom-16 right-0 w-80 bg-brand-gray border border-white/10 rounded-lg shadow-2xl overflow-hidden flex flex-col transition-all transform origin-bottom-right scale-90 opacity-0">
+            <div class="bg-brand-dark p-4 border-b border-white/10 flex justify-between items-center">
+                <h4 class="text-white font-display text-sm">TJ Support AI</h4>
+                <button id="close-chat" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="chat-messages" class="h-64 overflow-y-auto p-4 space-y-3 bg-brand-gray">
+                <div class="flex gap-2">
+                    <div class="w-8 h-8 rounded-full bg-brand-accent flex items-center justify-center text-xs font-bold text-black"><i class="fas fa-robot"></i></div>
+                    <div class="bg-white/10 p-3 rounded-lg text-sm text-gray-200">Hello! Interested in a shoot in Bangalore or Wayanad? Let me know!</div>
+                </div>
+            </div>
+            <div class="p-3 bg-brand-dark">
+                <form id="chat-form" class="flex gap-2" onsubmit="handleChat(event)">
+                    <input type="text" id="chat-input" name="message" placeholder="Ask about rates..." class="flex-1 bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-accent">
+                    <button type="submit" class="text-brand-accent hover:text-white px-2"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="fixed inset-0 z-[60] bg-black/95 hidden flex items-center justify-center p-4">
+        <button onclick="closeModal()" class="absolute top-6 right-6 text-white text-4xl hover:text-brand-accent">&times;</button>
+        <div class="max-w-5xl w-full text-center">
+            <img id="modal-img" src="" alt="Project View" class="max-h-[80vh] mx-auto shadow-2xl border border-white/10">
+            <h3 id="modal-title" class="text-white font-display text-2xl mt-4"></h3>
+            <p id="modal-cat" class="text-brand-accent text-sm uppercase tracking-widest mt-1"></p>
+        </div>
+    </div>
+
+    <!-- External JS File -->
+    <script src="script.js"></script>
+</body>
+</html>

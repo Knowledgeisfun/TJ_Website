@@ -1,0 +1,54 @@
+/* Custom Styles for TJ Productions */
+
+/* Base overrides */
+body {
+    background-color: #050505;
+    color: #f3f3f3;
+}
+
+/* Glassmorphism Navigation */
+.glass-nav {
+    background: rgba(5, 5, 5, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Masonry Layout Fixes */
+.portfolio-item {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+}
+
+/* Chrome Text Effect for Logo */
+.text-chrome {
+    background: linear-gradient(to bottom, #ffffff 0%, #e2e2e2 50%, #8e8e8e 51%, #a4a4a4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #050505; 
+}
+::-webkit-scrollbar-thumb {
+    background: #333; 
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #C0C0C0; 
+}
+
+/* Loader Overlay */
+#loader {
+    position: fixed;
+    inset: 0;
+    background: #050505;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
