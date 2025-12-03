@@ -175,8 +175,13 @@
     <!-- Portfolio Section -->
     <section id="portfolio" class="py-24 bg-brand-gray">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
-                <div>
+            <!-- 
+                FIX APPLIED HERE:
+                1. 'items-end' changed to 'items-center md:items-end' to center on mobile.
+                2. Added 'text-center md:text-left' to the header wrapper to center text on mobile.
+            -->
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-12">
+                <div class="text-center md:text-left">
                     <h2 class="font-display text-3xl md:text-5xl mb-2 text-white">Selected Works</h2>
                     <p class="text-brand-accent font-serif italic">Curated by Tomin James</p>
                 </div>
@@ -188,7 +193,7 @@
                 </div>
             </div>
 
-            <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            <div class="grid grid-cols-1 gap-6 md:block md:columns-2 lg:columns-3 md:gap-6 md:space-y-6">
                 <!-- Item 1 -->
                 <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', 'Gold Collection', 'Jewellery Photography')">
                     <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Jewellery" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
@@ -276,7 +281,13 @@
                     <div class="absolute -inset-4 bg-brand-accent opacity-10 blur-xl rounded-full"></div>
                     <div class="relative aspect-square bg-gray-900 rounded-lg overflow-hidden border border-white/10 flex items-center justify-center group">
                          <i class="fas fa-camera text-6xl text-brand-accent/20 group-hover:text-brand-accent/50 transition duration-500"></i>
-                         <img src="https://images.unsplash.com/photo-1554048612-387768052bf7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay hover:opacity-100 hover:mix-blend-normal transition duration-700">
+                         <!-- 
+                            UPDATED IMAGE STYLING:
+                            - object-cover: Ensures the image fills the square perfectly (no stretching).
+                            - grayscale: Makes it Black & White to match the dark theme.
+                            - hover:grayscale-0: Brings back full color when you hover over it.
+                         -->
+                         <img src="assets/images/TominJames.jpg" class="absolute inset-0 w-full h-full object-cover grayscale opacity-90 hover:opacity-100 hover:grayscale-0 transition duration-700">
                     </div>
                 </div>
             </div>
@@ -308,9 +319,20 @@
             </form>
 
             <div class="mt-12 flex justify-center space-x-8 text-gray-500">
-                <a href="#" class="hover:text-brand-accent transition"><i class="fab fa-instagram text-2xl"></i></a>
-                <a href="#" class="hover:text-brand-accent transition"><i class="fab fa-whatsapp text-2xl"></i></a>
-                <a href="#" class="hover:text-brand-accent transition"><i class="fas fa-envelope text-2xl"></i></a>
+                <!-- Instagram (Opens in new tab) -->
+                <a href="https://www.instagram.com/tomin_james_/" target="_blank" class="hover:text-brand-accent transition"><i class="fab fa-instagram text-2xl"></i></a>
+                
+                <!-- WhatsApp (Placeholder) -->
+                <a href="https://wa.me/7012675718?text=Hi, I am interested in a shoot." class="hover:text-brand-accent transition"><i class="fab fa-whatsapp text-2xl"></i></a>
+                
+                <!-- 
+                   UPDATED EMAIL LINK:
+                   1. 'mailto:' opens the mail app.
+                   2. '?subject=...' pre-fills the subject line so you know it's a lead.
+                -->
+                <a href="mailto:sanjayvinodkentrance@gmail.com?subject=Inquiry for TJ Productions" class="hover:text-brand-accent transition">
+                    <i class="fas fa-envelope text-2xl"></i>
+                </a>
             </div>
             <p class="mt-8 text-xs text-gray-600">Follow @tomin_james_ for latest updates</p>
         </div>
