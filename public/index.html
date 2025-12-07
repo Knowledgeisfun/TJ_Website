@@ -346,12 +346,10 @@
     </footer>
 
     <!-- Chat Widget -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <button id="chat-toggle" class="bg-brand-accent text-brand-dark w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-white transition duration-300">
-            <i class="fas fa-comment-dots text-2xl"></i>
-        </button>
-
-        <div id="chat-window" class="hidden absolute bottom-16 right-0 w-80 bg-brand-gray border border-white/10 rounded-lg shadow-2xl overflow-hidden flex flex-col transition-all transform origin-bottom-right scale-90 opacity-0">
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        <!-- Chat Window -->
+        <!-- Added 'origin-bottom-right' and 'mb-4' for better spacing on mobile -->
+        <div id="chat-window" class="hidden w-80 max-w-[90vw] bg-brand-gray border border-white/10 rounded-lg shadow-2xl overflow-hidden flex flex-col transition-all transform origin-bottom-right scale-90 opacity-0 mb-4">
             <div class="bg-brand-dark p-4 border-b border-white/10 flex justify-between items-center">
                 <h4 class="text-white font-display text-sm">TJ Support AI</h4>
                 <button id="close-chat" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
@@ -363,12 +361,29 @@
                 </div>
             </div>
             <div class="p-3 bg-brand-dark">
-                <form id="chat-form" class="flex gap-2" onsubmit="handleChat(event)">
-                    <input type="text" id="chat-input" name="message" placeholder="Ask about rates..." class="flex-1 bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-accent">
+                <!-- 
+                   FIX APPLIED: 
+                   1. Added autocomplete="off" to prevent suggestions covering the view.
+                -->
+                <form id="chat-form" class="flex gap-2" onsubmit="handleChat(event)" autocomplete="off">
+                    <!-- 
+                       FIX APPLIED: 
+                       1. 'text-base': Sets font to 16px on Mobile (Prevents Zoom).
+                       2. 'md:text-sm': Sets font back to 14px on Desktop.
+                       3. 'enterkeyhint="send"': Changes keyboard "Return" key to blue "Send" button.
+                    -->
+                    <input type="text" id="chat-input" name="message" placeholder="Ask about rates..." 
+                           class="flex-1 bg-white/5 border border-white/10 rounded px-3 py-2 text-base md:text-sm text-white focus:outline-none focus:border-brand-accent"
+                           enterkeyhint="send">
                     <button type="submit" class="text-brand-accent hover:text-white px-2"><i class="fas fa-paper-plane"></i></button>
                 </form>
             </div>
         </div>
+
+        <!-- Chat Toggle Button -->
+        <button id="chat-toggle" class="bg-brand-accent text-brand-dark w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-white transition duration-300">
+            <i class="fas fa-comment-dots text-2xl"></i>
+        </button>
     </div>
 
     <!-- Image Modal -->

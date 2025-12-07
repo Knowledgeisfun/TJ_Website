@@ -1,116 +1,173 @@
-require('dotenv').config(); // Load API keys from .env file
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
-const nodemailer = require('nodemailer'); // IMPORT EMAILER
-const { GoogleGenerativeAI } = require("@google/generative-ai"); // IMPORT GEMINI AI
+const nodemailer = require('nodemailer');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+// --- FIREBASE SETUP ---
+const admin = require('firebase-admin');
+
+// We construct the credentials object from .env variables
+// This prevents having to upload the actual JSON key file
+const serviceAccount = {
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+  // precise fix for newline characters in private key string
+  privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
+};
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const db = admin.firestore();
+
+// --- DEBUGGING LOG ---
+console.log("\n========================================");
+console.log("   🚀 SERVER STARTED: CONNECTED TO FIREBASE, MEMORY CLEANED");
+console.log("========================================\n");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- CONFIGURATION ---
-
-// 1. Configure Gemini AI
-// UPDATED: Using 'gemini-2.0-flash' based on your diagnostic test
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); 
 
-// 2. Configure Gmail Transporter
-// Note: You must use an "App Password" for Gmail, not your login password.
+// 1. The Brain (Persona)
+const SYSTEM_INSTRUCTION = `
+    ROLE: AI Business Manager for "TJ Productions" (Tomin James).
+    
+    KNOWLEDGE BASE:
+    - Locations: Bangalore & Wayanad.
+    - Owner: Tomin James (@tomin_james_).
+    - Services: Jewellery Photography, Lifestyle, Cinematic Wedding Films, 3D Product Animation.
+    - Contact: sanjayvinodkentrance@gmail.com
+    
+    BEHAVIOR:
+    - Tone: Professional, warm, creative.
+    - Memory: You MUST remember the user's name and details from previous messages in this conversation.
+    - Pricing: Never give fixed prices. Ask for details to give a custom quote.
+    
+    AUTO-FILL PROTOCOL (CRITICAL):
+    1. Gather the user's **Name**, **Service**, and **Project Details**.
+    2. Once you have these, ask: "Shall I draft an inquiry for you?"
+    3. If they agree, simply say "I have drafted the inquiry below for you." and then output the hidden data.
+    
+    * JSON Rules:
+      - Format: ^^^JSON{"fullName": "User Name", "serviceType": "Videography", "message": "The draft message text"}^^^
+      - "serviceType" must be one of: "Jewellery Photography", "Lifestyle Shoot", "Videography", "Animation".
+      - "message" should be the draft text.
+      - SILENCE RULE: NEVER mention "JSON" or "hidden data".
+`;
+
+const model = genAI.getGenerativeModel({ 
+    model: "gemini-2.0-flash",
+    systemInstruction: SYSTEM_INSTRUCTION
+}); 
+
+// 2. User Session Storage
+// This Map stores history based on a unique Session ID, not IP.
+const userSessions = new Map();
+
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.EMAIL_USER, // Your Gmail address
-        pass: process.env.EMAIL_PASS  // Your Gmail App Password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
 });
 
 // --- API ROUTES ---
 
-// 1. SMART Contact Form (Saves to File + Sends Email)
+app.get('/ping', (req, res) => {
+    res.send('TJ Productions Server is Online (Firebase Active)!');
+});
+
+// 1. Contact Form (Saves to Firebase Firestore)
 app.post('/api/contact', async (req, res) => {
     const { fullName, email, serviceType, message } = req.body;
     
     const newInquiry = {
-        id: Date.now(),
-        date: new Date().toLocaleString(),
         fullName,
         email,
         serviceType,
-        message
-    };
-
-    // A. Send Email Notification
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        // MODIFIED: Send to multiple people by separating with a comma
-        // Replace 'partner@example.com' with the actual second email address
-        to: `${process.env.EMAIL_USER}, productionstj50@gmail.com`, 
-        subject: `New Lead: ${fullName} (${serviceType})`,
-        text: `You have a new inquiry!\n\nName: ${fullName}\nEmail: ${email}\nService: ${serviceType}\nMessage: ${message}`
+        message,
+        date: new Date().toISOString(), // Use ISO string for database
+        timestamp: admin.firestore.FieldValue.serverTimestamp() // Database server time
     };
 
     try {
-        await transporter.sendMail(mailOptions);
-        console.log('--- EMAIL SENT SUCCESSFULLY ---');
-    } catch (error) {
-        console.error('Error sending email:', error);
-    }
+        // A. Save to Firebase
+        // We create a collection called 'inquiries' and add the new document
+        await db.collection('inquiries').add(newInquiry);
+        console.log('--- SAVED TO FIREBASE ---');
 
-    // B. Save to File (Backup)
-    const filePath = path.join(__dirname, 'inquiries.json');
-    fs.readFile(filePath, 'utf8', (err, data) => {
-        let inquiries = [];
-        if (!err && data) {
-            try { inquiries = JSON.parse(data); } catch (e) {}
-        }
-        inquiries.push(newInquiry);
-        fs.writeFile(filePath, JSON.stringify(inquiries, null, 2), (err) => {
-            if (err) res.status(500).json({ success: false, message: 'Server Error' });
-            else res.status(200).json({ success: true, message: 'Inquiry received! We will contact you soon.' });
-        });
-    });
+        // B. Send Email Notification
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: `${process.env.EMAIL_USER}, productionstj50@gmail.com`, 
+            subject: `New Lead: ${fullName} (${serviceType})`,
+            text: `You have a new inquiry!\n\nName: ${fullName}\nEmail: ${email}\nService: ${serviceType}\nMessage: ${message}`
+        };
+
+        // Send email asynchronously
+        transporter.sendMail(mailOptions).catch(err => console.error("Email Error:", err));
+
+        res.status(200).json({ success: true, message: 'Inquiry received and safely stored!' });
+
+    } catch (error) {
+        console.error('Firebase/Server Error:', error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
 });
 
-// 2. SMART Chatbot (Powered by Gemini)
+// 2. Chatbot Route (Now using Unique Session IDs)
 app.post('/api/chat', async (req, res) => {
-    const userMessage = req.body.message || "";
-    console.log(`User asked: ${userMessage}`);
+    const { message, sessionId } = req.body; // Extract session ID sent by frontend
+    const userMessage = message || "";
+    
+    // Use the Session ID if available, otherwise fall back to IP (for safety)
+    const distinctId = sessionId || req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    
+    console.log(`User (${distinctId}): ${userMessage}`);
 
     try {
-        // Updated Persona based on your Instagram Profile
-        const prompt = `
-            You are the friendly and professional AI assistant for "TJ Productions", a creative agency owned by Tomin James (@tomin_james_).
-            
-            Key Details:
-            - Locations: Bangalore and Wayanad.
-            - Expertise: Jewellery and Lifestyle Photography, Cinematic Videography, Animation.
-            - Brand Vibe: "Movie" aesthetic, high-end, expert quality.
-            
-            User asked: "${userMessage}"
-            
-            Answer the user briefly, professionally, and creatively as TJ Productions.
-        `;
+        // 1. Retrieve or Initialize History for THIS specific session
+        if (!userSessions.has(distinctId)) {
+            userSessions.set(distinctId, []);
+        }
+        let history = userSessions.get(distinctId);
 
-        const result = await model.generateContent(prompt);
+        // 2. Start Chat with User's specific history
+        const chatSession = model.startChat({
+            history: history,
+        });
+
+        const result = await chatSession.sendMessage(userMessage);
         const response = await result.response;
         const botReply = response.text();
+
+        // 3. Update User's History
+        history.push({ role: "user", parts: [{ text: userMessage }] });
+        history.push({ role: "model", parts: [{ text: botReply }] });
+        
+        // Save back to the map
+        userSessions.set(distinctId, history);
 
         res.json({ reply: botReply });
 
     } catch (error) {
         console.error("Gemini Error:", error);
-        // Fallback if AI fails
-        res.json({ reply: "I'm having trouble connecting to my creative brain right now. Please DM us on Instagram @tj_productions__ or email us directly!" });
+        // If error, maybe clear just that user's session
+        userSessions.delete(distinctId);
+        res.json({ reply: "I had a momentary glitch. Please tell me that last part again?" });
     }
 });
 
-// Start Server
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
