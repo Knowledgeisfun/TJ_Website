@@ -73,6 +73,19 @@ const model = genAI.getGenerativeModel({
 // This Map stores history based on a unique Session ID, not IP.
 const userSessions = new Map();
 
+// --- EMAIL DEBUGGING & SETUP ---
+const activeHost = process.env.SMTP_HOST || 'smtp-relay.brevo.com';
+const activePort = process.env.SMTP_PORT || 587;
+const activeUser = process.env.EMAIL_USER || 'Not Set';
+
+console.log("\n========================================");
+console.log(`   🚀 EMAIL SYSTEM CONFIGURATION`);
+console.log(`   -----------------------------`);
+console.log(`   ► HOST: ${activeHost}`);
+console.log(`   ► PORT: ${activePort}`);
+console.log(`   ► USER: ${activeUser}`);
+console.log("========================================\n");
+
 // --- EMAIL TRANSPORTER (UNIVERSAL FIX) ---
 // We now use environment variables for the host/port.
 // This allows you to switch to Brevo/SendGrid instantly via Render settings.
