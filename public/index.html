@@ -149,13 +149,14 @@
                     </p>
                 </div>
 
+                <!-- UPDATED: Videography -> Cinematography -->
                 <div class="p-8 border border-white/5 bg-gradient-to-br from-white/5 to-transparent hover:border-brand-accent/50 transition duration-500 group">
                     <div class="text-brand-accent text-4xl mb-6 group-hover:scale-110 transition duration-300">
                         <i class="fas fa-film"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 font-display text-white">Videography</h3>
+                    <h3 class="text-xl font-bold mb-3 font-display text-white">Cinematography</h3>
                     <p class="text-gray-400 font-light leading-relaxed">
-                        From product reels to cinematic brand stories. We bring a "Movie" aesthetic to your promotional content.
+                        Cinematic storytelling for weddings, events, and brands. We capture the energy of the moment with a true "Movie" aesthetic.
                     </p>
                 </div>
 
@@ -172,82 +173,77 @@
         </div>
     </section>
 
-    <!-- Portfolio Section -->
+   <!-- Portfolio Section -->
     <section id="portfolio" class="py-24 bg-brand-gray">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- 
-                FIX APPLIED HERE:
-                1. 'items-end' changed to 'items-center md:items-end' to center on mobile.
-                2. Added 'text-center md:text-left' to the header wrapper to center text on mobile.
-            -->
             <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-12">
                 <div class="text-center md:text-left">
-                    <h2 class="font-display text-3xl md:text-5xl mb-2 text-white">Selected Works</h2>
+                    <h2 class="font-display text-3xl md:text-5xl mb-2 text-white">Gallery</h2>
                     <p class="text-brand-accent font-serif italic">Curated by Tomin James</p>
                 </div>
+                
                 <div class="mt-4 md:mt-0 flex gap-4">
                     <span class="text-xs uppercase tracking-widest text-white border-b border-brand-accent pb-1 cursor-pointer">All</span>
                     <span class="text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer">Jewellery</span>
+                    <span class="text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer">Events</span>
                     <span class="text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer">Lifestyle</span>
-                    <span class="text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer">Video</span>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 gap-6 md:block md:columns-2 lg:columns-3 md:gap-6 md:space-y-6">
-                <!-- Item 1 -->
-                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', 'Gold Collection', 'Jewellery Photography')">
-                    <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Jewellery" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                
+                <!-- 1. JEWELLERY COLLAGE (Updated Path) -->
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('assets/images/jewelry.avif', 'Bridal Collection', 'Jewellery')">
+                    <img src="assets/images/jewelry.avif" alt="Jewellery Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
                         <div>
-                            <h4 class="font-display text-xl text-white">Gold Collection</h4>
-                            <p class="text-brand-accent text-xs uppercase tracking-widest">Jewellery</p>
+                            <h4 class="font-display text-xl text-white">Gold & Diamond</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Macro & Editorial</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Item 2 -->
-                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', 'Cinematic Wedding', 'Videography')">
-                    <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Video" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                <!-- 2. EVENTS COLLAGE (Updated Path) -->
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('assets/images/events.avif', 'Concerts & Weddings', 'Events')">
+                    <img src="assets/images/events.avif" alt="Events Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
                         <div>
-                            <h4 class="font-display text-xl text-white">Cinematic Wedding</h4>
-                            <p class="text-brand-accent text-xs uppercase tracking-widest">Videography</p>
+                            <h4 class="font-display text-xl text-white">Live Moments</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Weddings & DJ Sets</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Item 3 -->
-                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', 'Fashion Editorial', 'Lifestyle')">
-                    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Lifestyle" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                <!-- 3. LIFESTYLE COLLAGE (Updated Path) -->
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('assets/images/Lifestyle (1).avif', 'Fashion Series', 'Lifestyle')">
+                    <img src="assets/images/Lifestyle (1).avif" alt="Lifestyle Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
                         <div>
-                            <h4 class="font-display text-xl text-white">Fashion Editorial</h4>
-                            <p class="text-brand-accent text-xs uppercase tracking-widest">Lifestyle</p>
+                            <h4 class="font-display text-xl text-white">Urban Lifestyle</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Fashion & Product</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Item 4 -->
-                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('https://images.unsplash.com/photo-1617038220319-276d3cfab638?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', 'Diamond Macro', 'Jewellery')">
-                    <img src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Diamond" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                <!-- 4. VIDEO REEL -->
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openVideoModal('dQw4w9WgXcQ', 'Cinematic Reel', 'Videography')">
+                    <!-- Replace this Unsplash image with a local thumbnail if you have one, e.g. src="assets/images/video-thumb.jpg" -->
+                    <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Showreel" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    
+                    <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                        <div class="w-16 h-16 bg-brand-accent/80 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition duration-300">
+                            <i class="fas fa-play text-black text-xl ml-1"></i>
+                        </div>
+                    </div>
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
                         <div>
-                            <h4 class="font-display text-xl text-white">Diamond Details</h4>
-                            <p class="text-brand-accent text-xs uppercase tracking-widest">Macro Photography</p>
+                            <h4 class="font-display text-xl text-white">2025 Showreel</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Cinematography</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Item 5 -->
-                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80', '3D Product Motion', 'Animation')">
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Animation" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
-                        <div>
-                            <h4 class="font-display text-xl text-white">3D Product Motion</h4>
-                            <p class="text-brand-accent text-xs uppercase tracking-widest">Animation</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -393,6 +389,15 @@
             <img id="modal-img" src="" alt="Project View" class="max-h-[80vh] mx-auto shadow-2xl border border-white/10">
             <h3 id="modal-title" class="text-white font-display text-2xl mt-4"></h3>
             <p id="modal-cat" class="text-brand-accent text-sm uppercase tracking-widest mt-1"></p>
+        </div>
+    </div>
+
+    <!-- VIDEO Modal (New) -->
+    <div id="video-modal" class="fixed inset-0 z-[60] bg-black/95 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <button onclick="closeVideoModal()" class="absolute top-6 right-6 text-white text-4xl hover:text-brand-accent z-50">&times;</button>
+        <div class="w-full max-w-6xl aspect-video bg-black shadow-2xl border border-white/10 relative">
+            <!-- The iframe src will be injected by JS -->
+            <iframe id="youtube-player" class="w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
     </div>
 

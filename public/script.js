@@ -1,6 +1,6 @@
 /**
  * TJ Productions - Main Script
- * Handles loader, navigation, modal, API form submissions, Intelligent Chat, and UI Polish.
+ * Handles loader, navigation, video/image modals, API form submissions, Intelligent Chat, and UI Polish.
  */
 
 // --- SESSION ID GENERATOR ---
@@ -12,34 +12,27 @@ if (!sessionId) {
 console.log("Chat Session ID:", sessionId);
 
 // --- MODERN NOTIFICATION SYSTEM (Toasts) ---
-// Replaces ugly alert() boxes with sleek, animated banners
 function showNotification(message, type = 'success') {
-    // 1. Create Element
     const toast = document.createElement('div');
-    // Base styles (fixed position, glassmorphism, nice shadows)
     toast.className = `fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 transition-all duration-500 opacity-0 translate-y-[-20px] backdrop-blur-md border pointer-events-none`;
     
-    // 2. Style based on type (Success, Error, Info)
     if (type === 'success') {
         toast.classList.add('bg-green-900/90', 'border-green-500/50', 'text-green-100');
         toast.innerHTML = `<i class="fas fa-check-circle text-xl"></i> <span class="font-medium font-sans">${message}</span>`;
     } else if (type === 'error') {
         toast.classList.add('bg-red-900/90', 'border-red-500/50', 'text-red-100');
         toast.innerHTML = `<i class="fas fa-exclamation-circle text-xl"></i> <span class="font-medium font-sans">${message}</span>`;
-    } else { // Info / Neutral (for AI Drafts)
+    } else { // Info
         toast.classList.add('bg-brand-gray/95', 'border-brand-accent/50', 'text-brand-accent');
         toast.innerHTML = `<i class="fas fa-magic text-xl"></i> <span class="font-medium font-sans">${message}</span>`;
     }
 
-    // 3. Add to DOM
     document.body.appendChild(toast);
 
-    // 4. Animate In (Small delay to allow CSS render)
     requestAnimationFrame(() => {
         toast.classList.remove('opacity-0', 'translate-y-[-20px]');
     });
 
-    // 5. Auto Remove after 4 seconds
     setTimeout(() => {
         toast.classList.add('opacity-0', 'translate-y-[-20px]');
         setTimeout(() => toast.remove(), 500);
@@ -69,7 +62,7 @@ if (btn && menu) {
     });
 }
 
-// --- SMART NAVBAR (Hide on Scroll Down, Show on Scroll Up) ---
+// --- Sticky Navbar Effect ---
 let lastScrollTop = 0;
 window.addEventListener('scroll', () => {
     const nav = document.getElementById('navbar');
@@ -77,7 +70,6 @@ window.addEventListener('scroll', () => {
 
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
-    // 1. Glass Effect
     if (scrollTop > 50) {
         nav.classList.add('shadow-lg');
         nav.style.background = 'rgba(5, 5, 5, 0.95)';
@@ -86,7 +78,6 @@ window.addEventListener('scroll', () => {
         nav.style.background = 'rgba(5, 5, 5, 0.8)';
     }
 
-    // 2. Hide/Show Logic
     if (scrollTop > lastScrollTop && scrollTop > 100) {
         nav.style.transform = 'translateY(-100%)';
     } else {
@@ -96,7 +87,9 @@ window.addEventListener('scroll', () => {
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 });
 
-// --- Image Modal Logic ---
+// --- MODAL LOGIC (Images & Video) ---
+
+// 1. Image Modal
 const modal = document.getElementById('image-modal');
 const modalImg = document.getElementById('modal-img');
 const modalTitle = document.getElementById('modal-title');
@@ -108,17 +101,85 @@ function openModal(src, title, category) {
         modalTitle.innerText = title;
         modalCat.innerText = category;
         modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
     }
 }
 
 function closeModal() {
     if (modal) {
         modal.classList.add('hidden');
+        document.body.style.overflow = '';
     }
 }
 
+// 2. Video Modal (YouTube)
+const videoModal = document.getElementById('video-modal');
+const youtubePlayer = document.getElementById('youtube-player');
+
+function openVideoModal(videoId, title, category) {
+    if (videoModal && youtubePlayer) {
+        youtubePlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        videoModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeVideoModal() {
+    if (videoModal && youtubePlayer) {
+        videoModal.classList.add('hidden');
+        youtubePlayer.src = ""; // Important: Stop the video audio!
+        document.body.style.overflow = '';
+    }
+}
+
+// --- NEW FEATURE: Swipe Down to Close (Mobile) ---
+// Allows users to swipe down on the screen to close modals naturally
+function attachSwipeClose(element, closeCallback) {
+    if (!element) return;
+    
+    let touchStartY = 0;
+    
+    element.addEventListener('touchstart', (e) => {
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    element.addEventListener('touchend', (e) => {
+        const touchEndY = e.changedTouches[0].screenY;
+        // If swipe down distance is greater than 50px
+        if (touchEndY - touchStartY > 50) {
+            closeCallback();
+        }
+    }, { passive: true });
+}
+
+// Enable swipe on both modals
+attachSwipeClose(modal, closeModal);
+attachSwipeClose(videoModal, closeVideoModal);
+
+// --- NEW FEATURE: Click Outside to Close ---
+// This handles the "Tap Background" behavior for Mobile and Desktop
+window.addEventListener('click', (e) => {
+    // Check if the click target IS the modal background (and not the image/video inside it)
+    if (e.target === modal) {
+        closeModal();
+    }
+    if (e.target === videoModal) {
+        closeVideoModal();
+    }
+});
+
+// Close modals on Escape key (Desktop Niche Feature)
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal();
+        closeVideoModal();
+    }
+});
+
 window.openModal = openModal;
 window.closeModal = closeModal;
+window.openVideoModal = openVideoModal;
+window.closeVideoModal = closeVideoModal;
 
 // --- Chatbot Logic ---
 const chatToggle = document.getElementById('chat-toggle');
@@ -147,7 +208,6 @@ if (closeChat && chatWindow) {
     });
 }
 
-// FIX: Ensure Mobile "Enter" Key submits the form
 if (chatInput) {
     chatInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -157,13 +217,12 @@ if (chatInput) {
     });
 }
 
-// --- INTELLIGENT CHAT HANDLER (Auto-Fill + Session ID + Typing Indicator) ---
+// --- INTELLIGENT CHAT HANDLER ---
 window.handleChat = async function(e) {
     if(e) e.preventDefault();
     const msg = chatInput.value.trim();
     if(!msg) return;
 
-    // 1. Add User Message
     const userDiv = document.createElement('div');
     userDiv.className = 'flex gap-2 justify-end';
     userDiv.innerHTML = `<div class="bg-brand-accent p-3 rounded-lg text-sm text-brand-dark font-semibold text-left">${msg}</div>`;
@@ -175,7 +234,6 @@ window.handleChat = async function(e) {
     
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    // 2. Add Typing Indicator
     const typingDiv = document.createElement('div');
     typingDiv.id = 'typing-indicator';
     typingDiv.className = 'flex gap-2';
@@ -191,7 +249,6 @@ window.handleChat = async function(e) {
     chatMessages.appendChild(typingDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    // 3. Send to Backend
     try {
         const response = await fetch('/api/chat', {
             method: 'POST',
@@ -202,11 +259,9 @@ window.handleChat = async function(e) {
         const data = await response.json();
         let botText = data.reply;
 
-        // Remove Typing Indicator
         const indicator = document.getElementById('typing-indicator');
         if(indicator) indicator.remove();
 
-        // --- Check for Hidden Auto-Fill Data ---
         if (botText.includes('^^^JSON')) {
             try {
                 const parts = botText.split('^^^JSON');
@@ -234,7 +289,6 @@ window.handleChat = async function(e) {
                         form.classList.add('ring-2', 'ring-brand-accent', 'transition-all', 'duration-500');
                         setTimeout(() => form.classList.remove('ring-2', 'ring-brand-accent'), 2000);
                         
-                        // NEW: Use modern notification instead of alert()
                         showNotification("Draft ready! Check the form below.", "info");
                     }, 800);
                 }
@@ -243,7 +297,6 @@ window.handleChat = async function(e) {
             }
         }
 
-        // 4. Add Bot Reply
         const aiDiv = document.createElement('div');
         aiDiv.className = 'flex gap-2';
         aiDiv.innerHTML = `
@@ -273,31 +326,26 @@ window.handleChat = async function(e) {
 // --- Contact Form Logic ---
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
-    // 1. Disable default browser validation bubbles
     contactForm.setAttribute('novalidate', 'true');
 
     contactForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        // 2. Custom Validation
         const formData = new FormData(this);
         const data = Object.fromEntries(formData.entries());
 
-        // Simple check: Are any fields empty?
         if (!data.fullName || !data.email || !data.message) {
             showNotification('Please fill in all required fields.', 'error');
             
-            // Optional: Highlight empty fields
             if(!data.fullName) this.querySelector('[name="fullName"]').classList.add('border-red-500');
             if(!data.email) this.querySelector('[name="email"]').classList.add('border-red-500');
             if(!data.message) this.querySelector('[name="message"]').classList.add('border-red-500');
             
-            // Remove highlight after 2 seconds
             setTimeout(() => {
                 this.querySelectorAll('.border-red-500').forEach(el => el.classList.remove('border-red-500'));
             }, 2000);
             
-            return; // Stop submission
+            return;
         }
 
         const btn = this.querySelector('button');
@@ -315,16 +363,13 @@ if (contactForm) {
             const result = await response.json();
 
             if(response.ok) {
-                // NEW: Use modern notification for Success
                 showNotification('Inquiry sent successfully! Talk to you soon.', 'success');
                 this.reset();
             } else {
-                // NEW: Use modern notification for Error
                 showNotification('Submission failed. Please try again.', 'error');
             }
         } catch (error) {
             console.error('Contact Form Error:', error);
-            // NEW: Use modern notification for Server Error
             showNotification('Network error. Check your connection.', 'error');
         } finally {
             btn.innerText = originalText;
