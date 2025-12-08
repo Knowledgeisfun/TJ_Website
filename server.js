@@ -77,13 +77,17 @@ const userSessions = new Map();
 // Switched to explicit SMTP settings to avoid timeouts
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // Use SSL
+    port: 587,
+    secure: false, // Must be false for port 587
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
-    connectionTimeout: 10000, // Fail faster if blocked
+    tls: {
+        rejectUnauthorized: false // Helps avoid some strict cloud SSL errors
+    },
+    logger: true, // Log transaction details for debugging
+    debug: true   // Include SMTP traffic in logs
 });
 
 // Verify email connection on startup
