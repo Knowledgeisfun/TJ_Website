@@ -73,11 +73,25 @@ const model = genAI.getGenerativeModel({
 // This Map stores history based on a unique Session ID, not IP.
 const userSessions = new Map();
 
+// --- EMAIL TRANSPORTER (FIXED) ---
+// Switched to explicit SMTP settings to avoid timeouts
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // Use SSL
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
+    },
+    connectionTimeout: 10000, // Fail faster if blocked
+});
+
+// Verify email connection on startup
+transporter.verify(function (error, success) {
+    if (error) {
+        console.error("❌ Email Server Connection Failed:", error);
+    } else {
+        console.log("✅ Email Server is Ready to Send");
     }
 });
 
