@@ -73,24 +73,21 @@ const model = genAI.getGenerativeModel({
 // This Map stores history based on a unique Session ID, not IP.
 const userSessions = new Map();
 
-// --- EMAIL TRANSPORTER (IPV4 FIX) ---
+// --- EMAIL TRANSPORTER (SSL FIX) ---
+// Trying Port 465 (Secure SSL) with IPv4 enforcement
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, 
+    port: 465,
+    secure: true, // TRUE for 465
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
-    tls: {
-        rejectUnauthorized: false
-    },
-    // FORCE IPv4: Fixes timeouts on Render/AWS where IPv6 is flaky
+    // Force IPv4 to avoid IPv6 timeouts on Render
     family: 4, 
     logger: true,
     debug: true,
-    connectionTimeout: 10000,
-    greetingTimeout: 5000 // Wait up to 5s for Google to say Hello
+    connectionTimeout: 10000 
 });
 
 // Verify email connection on startup
