@@ -45,7 +45,7 @@ const SYSTEM_INSTRUCTION = `
     - Locations: Bangalore & Wayanad.
     - Owner: Tomin James (@tomin_james_).
     - Services: Jewellery Photography, Lifestyle, Cinematic Wedding Films, 3D Product Animation.
-    - Contact: sanjayvinodkentrance@gmail.com
+    - Contact: productionstj50@gmail.com
     
     BEHAVIOR:
     - Tone: Professional, warm, creative.
@@ -65,7 +65,7 @@ const SYSTEM_INSTRUCTION = `
 `;
 
 const model = genAI.getGenerativeModel({ 
-    model: "gemini-2.0-flash",
+    model: "gemini-2.5-flash",
     systemInstruction: SYSTEM_INSTRUCTION
 }); 
 
