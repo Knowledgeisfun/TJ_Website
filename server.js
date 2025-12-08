@@ -86,31 +86,33 @@ console.log(`   ► PORT: ${activePort}`);
 console.log(`   ► USER: ${activeUser}`);
 console.log("========================================\n");
 
-// --- EMAIL TRANSPORTER (UNIVERSAL FIX) ---
-// We now use environment variables for the host/port.
-// This allows you to switch to Brevo/SendGrid instantly via Render settings.
 const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp-relay.brevo.com', // Default to Brevo if not set
-    port: process.env.SMTP_PORT || 587,
-    secure: false, // true for 465, false for other ports
+    host: activeHost,
+    port: activePort,
+    secure: false, 
     auth: {
-        user: process.env.EMAIL_USER, // Your Brevo Login Email
-        pass: process.env.EMAIL_PASS  // Your Brevo SMTP Key (Not password)
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS
     },
     tls: {
         rejectUnauthorized: false
     },
+    // FIX: Force IPv4 to prevent timeouts on Render/AWS
+    family: 4, 
     connectionTimeout: 10000 
 });
 
 // Verify email connection on startup
 transporter.verify(function (error, success) {
     if (error) {
-        console.error("❌ Email Server Connection Failed:", error);
-        console.error("   -> Hint: If using Gmail, they likely blocked the Cloud IP.");
-        console.error("   -> Fix: Switch to Brevo (Free) and update Render Environment Variables.");
+        console.error("❌ CONNECTION TEST FAILED:");
+        console.error(error);
+        if (activeHost.includes('gmail')) {
+            console.error("⚠️  CRITICAL: You are still trying to connect to GMAIL. Render blocks this.");
+            console.error("👉 ACTION: Go to Render Dashboard -> Environment -> Delete SMTP_HOST if it exists, or set it to 'smtp-relay.brevo.com'");
+        }
     } else {
-        console.log("✅ Email Server is Ready to Send");
+        console.log("✅ Email Server is Ready (" + activeHost + ")");
     }
 });
 
