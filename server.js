@@ -75,7 +75,7 @@ const userSessions = new Map();
 
 // --- EMAIL DEBUGGING & SETUP ---
 const activeHost = process.env.SMTP_HOST || 'smtp-relay.brevo.com';
-const activePort = process.env.SMTP_PORT || 587;
+const activePort = process.env.SMTP_PORT || 2525;
 const activeUser = process.env.EMAIL_USER || 'Not Set';
 
 console.log("\n========================================");
