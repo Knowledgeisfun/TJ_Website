@@ -73,20 +73,20 @@ const model = genAI.getGenerativeModel({
 // This Map stores history based on a unique Session ID, not IP.
 const userSessions = new Map();
 
-// --- EMAIL TRANSPORTER (SSL FIX) ---
-// Trying Port 465 (Secure SSL) with IPv4 enforcement
+// --- EMAIL TRANSPORTER (UNIVERSAL FIX) ---
+// We now use environment variables for the host/port.
+// This allows you to switch to Brevo/SendGrid instantly via Render settings.
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // TRUE for 465
+    host: process.env.SMTP_HOST || 'smtp-relay.brevo.com', // Default to Brevo if not set
+    port: process.env.SMTP_PORT || 587,
+    secure: false, // true for 465, false for other ports
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: process.env.EMAIL_USER, // Your Brevo Login Email
+        pass: process.env.EMAIL_PASS  // Your Brevo SMTP Key (Not password)
     },
-    // Force IPv4 to avoid IPv6 timeouts on Render
-    family: 4, 
-    logger: true,
-    debug: true,
+    tls: {
+        rejectUnauthorized: false
+    },
     connectionTimeout: 10000 
 });
 
@@ -94,6 +94,8 @@ const transporter = nodemailer.createTransport({
 transporter.verify(function (error, success) {
     if (error) {
         console.error("❌ Email Server Connection Failed:", error);
+        console.error("   -> Hint: If using Gmail, they likely blocked the Cloud IP.");
+        console.error("   -> Fix: Switch to Brevo (Free) and update Render Environment Variables.");
     } else {
         console.log("✅ Email Server is Ready to Send");
     }
