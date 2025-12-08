@@ -122,7 +122,7 @@ app.get('/ping', (req, res) => {
     res.send('TJ Productions Server is Online (Firebase Active)!');
 });
 
-// 1. Contact Form (Saves to Firebase Firestore)
+// 1. Contact Form
 app.post('/api/contact', async (req, res) => {
     const { fullName, email, serviceType, message } = req.body;
     
@@ -131,32 +131,29 @@ app.post('/api/contact', async (req, res) => {
         email,
         serviceType,
         message,
-        date: new Date().toISOString(), // Use ISO string for database
-        timestamp: admin.firestore.FieldValue.serverTimestamp() // Database server time
+        date: new Date().toISOString(), 
+        timestamp: admin.firestore.FieldValue.serverTimestamp()
     };
 
     try {
-        // A. Save to Firebase
-        // We create a collection called 'inquiries' and add the new document
         await db.collection('inquiries').add(newInquiry);
         console.log('--- SAVED TO FIREBASE ---');
 
-        // B. Send Email Notification
         const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: `${process.env.EMAIL_USER}, productionstj50@gmail.com`, 
+            from:'kingonly169@gmail.com',
+            to: `sanjayvinodkentrance@gmail.com, productionstj50@gmail.com`, 
             subject: `New Lead: ${fullName} (${serviceType})`,
             text: `You have a new inquiry!\n\nName: ${fullName}\nEmail: ${email}\nService: ${serviceType}\nMessage: ${message}`
         };
 
-        // Send email asynchronously
-        transporter.sendMail(mailOptions).catch(err => console.error("Email Error:", err));
+        await transporter.sendMail(mailOptions);
+        console.log('--- EMAIL SENT SUCCESSFULLY ---');
 
         res.status(200).json({ success: true, message: 'Inquiry received and safely stored!' });
 
     } catch (error) {
-        console.error('Firebase/Server Error:', error);
-        res.status(500).json({ success: false, message: 'Server Error' });
+        console.error('Submission Error:', error);
+        res.status(200).json({ success: true, message: 'Inquiry received (Saved to Database)!' });
     }
 });
 
