@@ -89,7 +89,6 @@ window.addEventListener('scroll', () => {
 
 // --- MODAL LOGIC (Images & Video) ---
 
-// 1. Image Modal
 const modal = document.getElementById('image-modal');
 const modalImg = document.getElementById('modal-img');
 const modalTitle = document.getElementById('modal-title');
@@ -101,7 +100,7 @@ function openModal(src, title, category) {
         modalTitle.innerText = title;
         modalCat.innerText = category;
         modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
+        document.body.style.overflow = 'hidden'; 
     }
 }
 
@@ -112,7 +111,6 @@ function closeModal() {
     }
 }
 
-// 2. Video Modal (YouTube)
 const videoModal = document.getElementById('video-modal');
 const youtubePlayer = document.getElementById('youtube-player');
 
@@ -127,48 +125,28 @@ function openVideoModal(videoId, title, category) {
 function closeVideoModal() {
     if (videoModal && youtubePlayer) {
         videoModal.classList.add('hidden');
-        youtubePlayer.src = ""; // Important: Stop the video audio!
+        youtubePlayer.src = ""; 
         document.body.style.overflow = '';
     }
 }
 
-// --- NEW FEATURE: Swipe Down to Close (Mobile) ---
-// Allows users to swipe down on the screen to close modals naturally
 function attachSwipeClose(element, closeCallback) {
     if (!element) return;
-    
     let touchStartY = 0;
-    
-    element.addEventListener('touchstart', (e) => {
-        touchStartY = e.changedTouches[0].screenY;
-    }, { passive: true });
-
+    element.addEventListener('touchstart', (e) => { touchStartY = e.changedTouches[0].screenY; }, { passive: true });
     element.addEventListener('touchend', (e) => {
-        const touchEndY = e.changedTouches[0].screenY;
-        // If swipe down distance is greater than 50px
-        if (touchEndY - touchStartY > 50) {
-            closeCallback();
-        }
+        if (e.changedTouches[0].screenY - touchStartY > 50) closeCallback();
     }, { passive: true });
 }
 
-// Enable swipe on both modals
 attachSwipeClose(modal, closeModal);
 attachSwipeClose(videoModal, closeVideoModal);
 
-// --- NEW FEATURE: Click Outside to Close ---
-// This handles the "Tap Background" behavior for Mobile and Desktop
 window.addEventListener('click', (e) => {
-    // Check if the click target IS the modal background (and not the image/video inside it)
-    if (e.target === modal) {
-        closeModal();
-    }
-    if (e.target === videoModal) {
-        closeVideoModal();
-    }
+    if (e.target === modal) closeModal();
+    if (e.target === videoModal) closeVideoModal();
 });
 
-// Close modals on Escape key (Desktop Niche Feature)
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeModal();
@@ -188,26 +166,67 @@ const closeChat = document.getElementById('close-chat');
 const chatMessages = document.getElementById('chat-messages');
 const chatInput = document.getElementById('chat-input');
 
-if (chatToggle && chatWindow) {
-    chatToggle.addEventListener('click', () => {
-        chatWindow.classList.remove('hidden');
-        setTimeout(() => {
-            chatWindow.classList.remove('scale-90', 'opacity-0');
-            // Focus input automatically when opening (Desktop only)
-            if(window.innerWidth > 768) chatInput.focus(); 
-        }, 10);
-    });
+// Helper to set button state (Rotate & Swap Icon)
+function setChatButtonState(isOpen) {
+    if (chatToggle) {
+        chatToggle.style.transition = 'transform 0.3s ease-in-out';
+        if (isOpen) {
+            chatToggle.style.transform = 'rotate(90deg)';
+            chatToggle.innerHTML = '<i class="fas fa-times text-2xl"></i>';
+        } else {
+            chatToggle.style.transform = 'rotate(0deg)';
+            chatToggle.innerHTML = '<i class="fas fa-comment-dots text-2xl"></i>';
+        }
+    }
 }
 
-if (closeChat && chatWindow) {
-    closeChat.addEventListener('click', () => {
-        chatWindow.classList.add('scale-90', 'opacity-0');
+// Reusable Open/Close Functions
+function openChatBot() {
+    if (chatWindow) {
+        chatWindow.classList.remove('hidden');
+        setTimeout(() => {
+            chatWindow.classList.remove('scale-0', 'opacity-0');
+            // Only auto-focus on desktop to prevent mobile keyboard jumping
+            if(window.innerWidth > 768 && chatInput) chatInput.focus(); 
+        }, 10);
+        setChatButtonState(true);
+    }
+}
+
+function closeChatBot() {
+    if (chatWindow) {
+        chatWindow.classList.add('scale-0', 'opacity-0');
         setTimeout(() => {
             chatWindow.classList.add('hidden');
         }, 300);
+        setChatButtonState(false);
+    }
+}
+
+// Toggle Listener
+if (chatToggle && chatWindow) {
+    chatToggle.addEventListener('click', () => {
+        const isHidden = chatWindow.classList.contains('hidden');
+        if (isHidden) openChatBot();
+        else closeChatBot();
     });
 }
 
+// Close Button Listener
+if (closeChat) {
+    closeChat.addEventListener('click', closeChatBot);
+}
+
+// Enable Swipe Down on Header to Close (Native Mobile Feel)
+if (chatWindow) {
+    // Select the first child (the header bar)
+    const chatHeader = chatWindow.firstElementChild;
+    if (chatHeader) {
+        attachSwipeClose(chatHeader, closeChatBot);
+    }
+}
+
+// FIX: Ensure Mobile "Enter" Key submits the form
 if (chatInput) {
     chatInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
