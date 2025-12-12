@@ -6,9 +6,17 @@ body {
     color: #f3f3f3;
 }
 
+/* Firefox Scrollbar Support */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: #333 #050505;
+}
+
 /* Glassmorphism Navigation */
 .glass-nav {
     background: rgba(5, 5, 5, 0.8);
+    /* Essential for iPhone/Safari support */
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -23,10 +31,11 @@ body {
 .text-chrome {
     background: linear-gradient(to bottom, #ffffff 0%, #e2e2e2 50%, #8e8e8e 51%, #a4a4a4 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* Scrollbar Styling */
+/* Scrollbar Styling (Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -51,4 +60,26 @@ body {
     justify-content: center;
     align-items: center;
     transition: opacity 0.5s ease;
+    /* Ensures clicks pass through if it fades out but stays in DOM */
+    pointer-events: none; 
+}
+/* Re-enable pointer events for the loader content itself while visible */
+#loader > * {
+    pointer-events: auto;
+}
+
+/* --- NEW: Specific Style for YouTube Shorts Modal --- */
+/* Forces the container to behave like a mobile screen */
+.vertical-video-modal {
+    width: 100% !important;
+    max-width: 450px !important; /* Slightly wider than avg phone */
+    aspect-ratio: 9 / 16 !important;
+    height: 80vh !important;
+    margin: 0 auto;
+}
+/* Fallback for older mobiles that don't support aspect-ratio well */
+@media (max-width: 768px) {
+    .vertical-video-modal {
+        height: 75vh !important;
+    }
 }

@@ -1,6 +1,6 @@
 /**
  * TJ Productions - Main Script
- * Handles loader, navigation, video/image modals, API form submissions, Intelligent Chat, and UI Polish.
+ * Handles loader, navigation, filtering, video/image modals, API form submissions, Intelligent Chat, and UI Polish.
  */
 
 // --- SESSION ID GENERATOR ---
@@ -41,6 +41,11 @@ function showNotification(message, type = 'success') {
 
 // --- Loader Logic ---
 window.addEventListener('load', () => {
+    // 1. FILTER FIRST: Apply the "Featured Only" filter instantly while the loader is still covering the screen.
+    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+    if(allBtn) allBtn.click();
+
+    // 2. FADE OUT LOADER
     const loader = document.getElementById('loader');
     if (loader) {
         setTimeout(() => {
@@ -87,14 +92,77 @@ window.addEventListener('scroll', () => {
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 });
 
+// --- PORTFOLIO FILTERING LOGIC (ROBUST MODE) ---
+const filterButtons = document.querySelectorAll('.filter-btn');
+const portfolioItems = document.querySelectorAll('.portfolio-item');
+const filtersContainer = document.getElementById('portfolio-filters');
+
+if (filtersContainer) {
+    filtersContainer.classList.add('flex-wrap', 'justify-center');
+    filtersContainer.style.rowGap = "10px"; 
+}
+
+if (filterButtons.length > 0 && portfolioItems.length > 0) {
+    let hasFeaturedItems = false;
+    portfolioItems.forEach(item => {
+        if (item.getAttribute('data-featured') === 'true') hasFeaturedItems = true;
+    });
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault(); 
+
+            filterButtons.forEach(b => {
+                b.classList.remove('text-white', 'border-b', 'border-brand-accent');
+                b.classList.add('text-gray-500');
+            });
+            btn.classList.remove('text-gray-500');
+            btn.classList.add('text-white', 'border-b', 'border-brand-accent');
+
+            const filterValue = btn.getAttribute('data-filter');
+
+            portfolioItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                const isFeatured = item.getAttribute('data-featured') === 'true';
+                
+                let shouldShow = false;
+
+                if (filterValue === 'all') {
+                    if (hasFeaturedItems) {
+                        if (isFeatured) shouldShow = true;
+                    } else {
+                        shouldShow = true;
+                    }
+                } else {
+                    if (hasFeaturedItems) {
+                         if (category === filterValue && !isFeatured) shouldShow = true;
+                    } else {
+                         if (category === filterValue) shouldShow = true;
+                    }
+                }
+
+                if (shouldShow) {
+                    item.classList.remove('hidden');
+                    item.classList.add('animate-fade-in-up');
+                } else {
+                    item.classList.add('hidden');
+                    item.classList.remove('animate-fade-in-up');
+                }
+            });
+        });
+    });
+}
+
 // --- MODAL LOGIC (Images & Video) ---
 
+// 1. Image Modal
 const modal = document.getElementById('image-modal');
 const modalImg = document.getElementById('modal-img');
 const modalTitle = document.getElementById('modal-title');
 const modalCat = document.getElementById('modal-cat');
 
 function openModal(src, title, category) {
+    console.log("Opening Image Modal for:", src);
     if (modal && modalImg && modalTitle && modalCat) {
         modalImg.src = src;
         modalTitle.innerText = title;
@@ -111,14 +179,52 @@ function closeModal() {
     }
 }
 
+// 2. Video Modal (Smart: YouTube & Shorts Only)
 const videoModal = document.getElementById('video-modal');
+const videoContainer = document.getElementById('video-container'); 
 const youtubePlayer = document.getElementById('youtube-player');
 
-function openVideoModal(videoId, title, category) {
+function openVideoModal(videoId, platform, title, category) {
+    console.log(`Opening Video: ${videoId} on ${platform}`); 
+
     if (videoModal && youtubePlayer) {
-        youtubePlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        
+        // Mobile Autoplay Fix
+        const isMobile = window.innerWidth < 768;
+        const shouldAutoplay = isMobile ? 0 : 1;
+        const shouldMute = isMobile ? 0 : 1;
+        const origin = window.location.origin;
+
+        const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=${shouldAutoplay}&mute=${shouldMute}&controls=1&playsinline=1&rel=0&modestbranding=1&origin=${origin}`;
+        youtubePlayer.src = embedUrl;
+
+        // Resize Container (Direct Styles for robustness)
+        if (videoContainer) {
+            // Reset to base classes
+            videoContainer.className = "shadow-2xl border border-white/10 relative bg-black mx-auto transition-all duration-300 w-full";
+            
+            // Clear inline styles first
+            videoContainer.style.maxWidth = '';
+            videoContainer.style.aspectRatio = '';
+            videoContainer.style.height = '';
+
+            if (platform === 'youtube-shorts') {
+                // VERTICAL MODE (Shorts)
+                // We set styles directly here so it works even if CSS is missing
+                videoContainer.style.maxWidth = '400px'; 
+                videoContainer.style.aspectRatio = '9 / 16';
+                // Adjust height for mobile vs desktop
+                videoContainer.style.height = isMobile ? '70vh' : '80vh'; 
+            } else {
+                // CINEMATIC MODE (Widescreen)
+                videoContainer.classList.add('max-w-6xl', 'aspect-video');
+            }
+        } 
+
         videoModal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
+    } else {
+        console.error("Video Modal elements not found!");
     }
 }
 
@@ -130,12 +236,18 @@ function closeVideoModal() {
     }
 }
 
+// --- SWIPE GESTURES ---
 function attachSwipeClose(element, closeCallback) {
     if (!element) return;
-    let touchStartY = 0;
-    element.addEventListener('touchstart', (e) => { touchStartY = e.changedTouches[0].screenY; }, { passive: true });
+    let touchStartY = null;
+    element.addEventListener('touchstart', (e) => { 
+        if(e.changedTouches.length > 0) touchStartY = e.changedTouches[0].screenY; 
+    }, { passive: true });
     element.addEventListener('touchend', (e) => {
-        if (e.changedTouches[0].screenY - touchStartY > 50) closeCallback();
+        if (touchStartY !== null && e.changedTouches.length > 0) {
+            if (e.changedTouches[0].screenY - touchStartY > 50) closeCallback();
+        }
+        touchStartY = null;
     }, { passive: true });
 }
 
@@ -148,12 +260,10 @@ window.addEventListener('click', (e) => {
 });
 
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeModal();
-        closeVideoModal();
-    }
+    if (e.key === 'Escape') { closeModal(); closeVideoModal(); }
 });
 
+// Global Exposure
 window.openModal = openModal;
 window.closeModal = closeModal;
 window.openVideoModal = openVideoModal;
@@ -166,7 +276,6 @@ const closeChat = document.getElementById('close-chat');
 const chatMessages = document.getElementById('chat-messages');
 const chatInput = document.getElementById('chat-input');
 
-// Helper to set button state (Rotate & Swap Icon)
 function setChatButtonState(isOpen) {
     if (chatToggle) {
         chatToggle.style.transition = 'transform 0.3s ease-in-out';
@@ -180,59 +289,41 @@ function setChatButtonState(isOpen) {
     }
 }
 
-// Reusable Open/Close Functions
-function openChatBot() {
-    if (chatWindow) {
-        chatWindow.classList.remove('hidden');
-        setTimeout(() => {
-            chatWindow.classList.remove('scale-0', 'opacity-0');
-            // Only auto-focus on desktop to prevent mobile keyboard jumping
-            if(window.innerWidth > 768 && chatInput) chatInput.focus(); 
-        }, 10);
-        setChatButtonState(true);
-    }
-}
-
-function closeChatBot() {
-    if (chatWindow) {
-        chatWindow.classList.add('scale-0', 'opacity-0');
-        setTimeout(() => {
-            chatWindow.classList.add('hidden');
-        }, 300);
-        setChatButtonState(false);
-    }
-}
-
-// Toggle Listener
 if (chatToggle && chatWindow) {
     chatToggle.addEventListener('click', () => {
         const isHidden = chatWindow.classList.contains('hidden');
-        if (isHidden) openChatBot();
-        else closeChatBot();
+        if (isHidden) {
+            chatWindow.classList.remove('hidden');
+            setTimeout(() => {
+                chatWindow.classList.remove('scale-0', 'opacity-0');
+                if(window.innerWidth > 768) chatInput.focus(); 
+            }, 10);
+            setChatButtonState(true);
+        } else {
+            chatWindow.classList.add('scale-0', 'opacity-0');
+            setTimeout(() => { chatWindow.classList.add('hidden'); }, 300);
+            setChatButtonState(false);
+        }
+    });
+}
+if (closeChat && chatWindow) {
+    closeChat.addEventListener('click', () => {
+        chatWindow.classList.add('scale-0', 'opacity-0');
+        setTimeout(() => { chatWindow.classList.add('hidden'); }, 300);
+        setChatButtonState(false); 
+    });
+}
+if (chatWindow && chatWindow.firstElementChild) {
+    attachSwipeClose(chatWindow.firstElementChild, () => {
+        chatWindow.classList.add('scale-0', 'opacity-0');
+        setTimeout(() => { chatWindow.classList.add('hidden'); }, 300);
+        setChatButtonState(false);
     });
 }
 
-// Close Button Listener
-if (closeChat) {
-    closeChat.addEventListener('click', closeChatBot);
-}
-
-// Enable Swipe Down on Header to Close (Native Mobile Feel)
-if (chatWindow) {
-    // Select the first child (the header bar)
-    const chatHeader = chatWindow.firstElementChild;
-    if (chatHeader) {
-        attachSwipeClose(chatHeader, closeChatBot);
-    }
-}
-
-// FIX: Ensure Mobile "Enter" Key submits the form
 if (chatInput) {
     chatInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            window.handleChat(e);
-        }
+        if (e.key === 'Enter') { e.preventDefault(); window.handleChat(e); }
     });
 }
 
@@ -250,7 +341,6 @@ window.handleChat = async function(e) {
     chatInput.value = '';
     chatInput.disabled = true;
     chatInput.placeholder = "Thinking...";
-    
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
     const typingDiv = document.createElement('div');
@@ -286,28 +376,23 @@ window.handleChat = async function(e) {
                 const parts = botText.split('^^^JSON');
                 const rawJson = parts[1].split('^^^')[0]; 
                 const autoFillData = JSON.parse(rawJson);
-
                 botText = parts[0]; 
 
                 const form = document.getElementById('contactForm');
                 if (form) {
                     if(autoFillData.fullName) form.querySelector('input[name="fullName"]').value = autoFillData.fullName;
-                    
                     const serviceSelect = form.querySelector('select[name="serviceType"]');
                     const serviceVal = autoFillData.serviceType ? autoFillData.serviceType.toLowerCase() : "";
-                    
                     if(serviceVal.includes('video') || serviceVal.includes('wedding')) serviceSelect.value = 'videography';
                     else if(serviceVal.includes('jewel')) serviceSelect.value = 'jewellery';
                     else if(serviceVal.includes('life') || serviceVal.includes('fashion')) serviceSelect.value = 'lifestyle';
                     else if(serviceVal.includes('anim')) serviceSelect.value = 'animation';
-                    
                     if(autoFillData.message) form.querySelector('textarea[name="message"]').value = autoFillData.message;
 
                     setTimeout(() => {
                         document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
                         form.classList.add('ring-2', 'ring-brand-accent', 'transition-all', 'duration-500');
                         setTimeout(() => form.classList.remove('ring-2', 'ring-brand-accent'), 2000);
-                        
                         showNotification("Draft ready! Check the form below.", "info");
                     }, 800);
                 }
@@ -327,10 +412,8 @@ window.handleChat = async function(e) {
 
     } catch (error) {
         console.error('Chat Error:', error);
-        
         const indicator = document.getElementById('typing-indicator');
         if(indicator) indicator.remove();
-
         const errorDiv = document.createElement('div');
         errorDiv.className = 'flex gap-2';
         errorDiv.innerHTML = `<div class="bg-red-900/50 p-3 rounded-lg text-sm text-red-200">System offline. Please try again.</div>`;
@@ -346,24 +429,19 @@ window.handleChat = async function(e) {
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
     contactForm.setAttribute('novalidate', 'true');
-
     contactForm.addEventListener('submit', async function(e) {
         e.preventDefault();
-        
         const formData = new FormData(this);
         const data = Object.fromEntries(formData.entries());
 
         if (!data.fullName || !data.email || !data.message) {
             showNotification('Please fill in all required fields.', 'error');
-            
             if(!data.fullName) this.querySelector('[name="fullName"]').classList.add('border-red-500');
             if(!data.email) this.querySelector('[name="email"]').classList.add('border-red-500');
             if(!data.message) this.querySelector('[name="message"]').classList.add('border-red-500');
-            
             setTimeout(() => {
                 this.querySelectorAll('.border-red-500').forEach(el => el.classList.remove('border-red-500'));
             }, 2000);
-            
             return;
         }
 
@@ -378,7 +456,6 @@ if (contactForm) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
-            
             const result = await response.json();
 
             if(response.ok) {

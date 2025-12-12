@@ -8,6 +8,10 @@
     
     <!-- 1. The Title (What shows up in the blue link on Google) -->
     <title>TJ Productions | Cinematic Wedding & Jewellery Photographer Bangalore</title>
+
+     <!-- 2. The Favicon (The Logo in the Browser Tab) -->
+    <!-- ACTION: Save your logo as 'favicon.png' in public/assets/images/ -->
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
     
     <!-- 2. The Description (The text under the link) -->
     <meta name="description" content="Premium creative agency for Jewellery Photography, Cinematic Wedding Films, and Lifestyle Shoots. Based in Bangalore & Wayanad. Book your shoot today.">
@@ -198,18 +202,21 @@
                     <p class="text-brand-accent font-serif italic">Curated by Tomin James</p>
                 </div>
                 
-                <div class="mt-4 md:mt-0 flex gap-4">
-                    <span class="text-xs uppercase tracking-widest text-white border-b border-brand-accent pb-1 cursor-pointer">All</span>
-                    <span class="text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer">Jewellery</span>
-                    <span class="text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer">Events</span>
-                    <span class="text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer">Lifestyle</span>
+                <!-- Filter Buttons -->
+                <div class="mt-4 md:mt-0 flex gap-4" id="portfolio-filters">
+                    <button class="filter-btn text-xs uppercase tracking-widest text-white border-b border-brand-accent pb-1 cursor-pointer focus:outline-none" data-filter="all">All</button>
+                    <button class="filter-btn text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer focus:outline-none" data-filter="jewellery">Jewellery</button>
+                    <button class="filter-btn text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer focus:outline-none" data-filter="events">Events</button>
+                    <button class="filter-btn text-xs uppercase tracking-widest text-gray-500 hover:text-white transition cursor-pointer focus:outline-none" data-filter="lifestyle">Lifestyle</button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 gap-6 md:block md:columns-2 lg:columns-3 md:gap-6 md:space-y-6">
+            <!-- Portfolio Grid -->
+            <div id="portfolio-grid" class="grid grid-cols-1 gap-6 md:block md:columns-2 lg:columns-3 md:gap-6 md:space-y-6">
                 
-                <!-- 1. JEWELLERY COLLAGE (Updated Path) -->
-                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('assets/images/jewelry.avif', 'Bridal Collection', 'Jewellery')">
+                <!-- 1. JEWELLERY COLLAGE -->
+                <!-- Added data-category="jewellery" -->
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="jewellery" data-featured="true" onclick="openModal('assets/images/jewelry.avif', 'Bridal Collection', 'Jewellery')">
                     <img src="assets/images/jewelry.avif" alt="Jewellery Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
                         <div>
@@ -219,8 +226,69 @@
                     </div>
                 </div>
 
-                <!-- 2. EVENTS COLLAGE (Updated Path) -->
-                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('assets/images/events.avif', 'Concerts & Weddings', 'Events')">
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="jewellery"  onclick="openModal('assets/images/jewelry/DSC00273.jpg', 'Bridal Collection', 'Jewellery')">
+                    <img src="assets/images/jewelry/DSC00273.jpg" alt="Jewellery Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Gold & Diamond</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Macro & Editorial</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="jewellery"  onclick="openModal('assets/images/jewelry/DSC00729.png', 'Bridal Collection', 'Jewellery')">
+                    <img src="assets/images/jewelry/DSC00729.png" alt="Jewellery Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Gold & Diamond</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Macro & Editorial</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="jewellery"  onclick="openModal('assets/images/jewelry/DSC09952.jpg', 'Bridal Collection', 'Jewellery')">
+                    <img src="assets/images/jewelry/DSC09952.jpg" alt="Jewellery Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Gold & Diamond</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Macro & Editorial</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="jewellery"  onclick="openModal('assets/images/jewelry/NEK_B0095_1.jpg', 'Bridal Collection', 'Jewellery')">
+                    <img src="assets/images/jewelry/NEK_B0095_1.jpg" alt="Jewellery Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Gold & Diamond</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Macro & Editorial</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="jewellery"  onclick="openModal('assets/images/jewelry/NEK_E04.jpg9_1.jpg', 'Bridal Collection', 'Jewellery')">
+                    <img src="assets/images/jewelry/NEK_E04.jpg9_1.jpg" alt="Jewellery Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Gold & Diamond</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Macro & Editorial</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="jewellery"  onclick="openModal('assets/images/jewelry/P1150779.jpg', 'Bridal Collection', 'Jewellery')">
+                    <img src="assets/images/jewelry/P1150779.jpg" alt="Jewellery Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Gold & Diamond</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Macro & Editorial</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. EVENTS COLLAGE -->
+                <!-- Added data-category="events" -->
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="events" data-featured="true" onclick="openModal('assets/images/events.avif', 'Concerts & Weddings', 'Events')">
                     <img src="assets/images/events.avif" alt="Events Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
                         <div>
@@ -230,8 +298,19 @@
                     </div>
                 </div>
 
-                <!-- 3. LIFESTYLE COLLAGE (Updated Path) -->
-                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openModal('assets/images/Lifestyle (1).avif', 'Fashion Series', 'Lifestyle')">
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="events" data-featured="false" onclick="openModal('assets/images/products/cake.png', 'Concerts & Weddings', 'Events')">
+                    <img src="assets/images/products/cake.png" alt="Events Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Cake</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Food Contest</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. LIFESTYLE COLLAGE -->
+                <!-- Added data-category="lifestyle" -->
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="lifestyle" data-featured="true" onclick="openModal('assets/images/Lifestyle (1).avif', 'Fashion Series', 'Lifestyle')">
                     <img src="assets/images/Lifestyle (1).avif" alt="Lifestyle Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
                         <div>
@@ -241,8 +320,58 @@
                     </div>
                 </div>
 
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="lifestyle" onclick="openModal('assets/images/modles/Horror.png', 'Fashion Series', 'Lifestyle')">
+                    <img src="assets/images/modles/Horror.png" alt="Lifestyle Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Urban Lifestyle</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Fashion & Product</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="lifestyle" onclick="openModal('assets/images/modles/IMG_2452.JPEG', 'Fashion Series', 'Lifestyle')">
+                    <img src="assets/images/modles/IMG_2452.JPEG" alt="Lifestyle Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Urban Lifestyle</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Fashion & Product</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="lifestyle" onclick="openModal('assets/images/modles/IMG_6806.JPG', 'Fashion Series', 'Lifestyle')">
+                    <img src="assets/images/modles/IMG_6806.JPG" alt="Lifestyle Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Urban Lifestyle</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Fashion & Product</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="lifestyle" onclick="openModal('assets/images/modles/IMG_6797.JPG', 'Fashion Series', 'Lifestyle')">
+                    <img src="assets/images/modles/IMG_6797.JPG" alt="Lifestyle Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Fields</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Fashion & Product</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer mb-6 break-inside-avoid" data-category="lifestyle" onclick="openModal('assets/images/modles/light 1.jpg', 'Fashion Series', 'Lifestyle')">
+                    <img src="assets/images/modles/light 1.jpg" alt="Lifestyle Grid" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 pointer-events-none">
+                        <div>
+                            <h4 class="font-display text-xl text-white">Light</h4>
+                            <p class="text-brand-accent text-xs uppercase tracking-widest">Fashion & Product</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 4. VIDEO REEL -->
-                <div class="portfolio-item relative group overflow-hidden cursor-pointer" onclick="openVideoModal('dQw4w9WgXcQ', 'Cinematic Reel', 'Videography')">
+                <div class="portfolio-item relative group overflow-hidden cursor-pointer" data-featured="false" onclick="openVideoModal('uo0VVOEgHW8', 'youtube-shorts', 'Cinematic Reel', 'Videography')">
                     <!-- Replace this Unsplash image with a local thumbnail if you have one, e.g. src="assets/images/video-thumb.jpg" -->
                     <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Showreel" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500 grayscale group-hover:grayscale-0">
                     
@@ -259,6 +388,7 @@
                         </div>
                     </div>
                 </div>
+
 
             </div>
         </div>
